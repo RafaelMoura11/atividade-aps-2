@@ -1,0 +1,16 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:root@localhost:3306/atividade_aps"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  photo       String?
+  createdAt   DateTime @default(now())
+}
