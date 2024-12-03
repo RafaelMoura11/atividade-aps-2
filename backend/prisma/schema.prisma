@@ -1,6 +1,9 @@
+// prisma/schema.prisma
 datasource db {
-  provider = "mysql"
-  url      = "mysql://root:root@localhost:3306/atividade_aps"
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 generator client {

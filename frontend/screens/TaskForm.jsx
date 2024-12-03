@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
+import api from '../api';
 
 const API_URL = 'http://localhost:3000';
 
@@ -34,7 +34,7 @@ export default function TaskForm({ navigation }) {
     }
 
     try {
-      await axios.post(`${API_URL}/tasks`, formData, {
+      await api.post(`${API_URL}/tasks`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       navigation.goBack();

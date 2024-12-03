@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import api from '../api';
 
 const API_URL = 'http://localhost:3000';
 
@@ -13,8 +13,9 @@ export default function TaskList({ navigation }) {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get(`${API_URL}/tasks`);
-      setTasks(response.data);
+      const response = await api.get();
+      console.log(response);
+      // setTasks(response.data);
     } catch (error) {
       console.error('Erro ao buscar tarefas:', error);
     }
@@ -22,7 +23,7 @@ export default function TaskList({ navigation }) {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`${API_URL}/tasks/${id}`);
+      await api.delete(`/tasks/${id}`);
       fetchTasks();
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
