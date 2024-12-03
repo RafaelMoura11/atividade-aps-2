@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import api from '../api';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://atividade-aps-2.onrender.com/';
 
 export default function TaskList({ navigation }) {
   const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const isFocused = useIsFocused(); // Hook para monitorar o foco na tela
 
   const fetchTasks = async () => {
     try {
-      const response = await api.get();
-      console.log(response);
-      // setTasks(response.data);
+      const response = await api.get("/tasks");
+      setTasks(response.data);
     } catch (error) {
       console.error('Erro ao buscar tarefas:', error);
     }
   };
 
+  useEffect(() => {
+    if (isFocused) {
+      fetchTasks(); // Recarregar as tarefas quando a tela estiver em foco
+    }
+  }, [isFocused]);
+
   const deleteTask = async (id) => {
     try {
       await api.delete(`/tasks/${id}`);
-      fetchTasks();
+      // Remover visualmente antes de recarregar
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      fetchTasks(); // Opcional: garantir sincronização com o servidor
     } catch (error) {
       console.error('Erro ao deletar tarefa:', error);
     }

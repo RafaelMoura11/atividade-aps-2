@@ -3,7 +3,7 @@ import { View, TextInput, Button, StyleSheet, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../api';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://atividade-aps-2.onrender.com';
 
 export default function TaskForm({ navigation }) {
   const [title, setTitle] = useState('');
@@ -32,16 +32,18 @@ export default function TaskForm({ navigation }) {
         type: 'image/jpeg',
       });
     }
-
+  
     try {
       await api.post(`${API_URL}/tasks`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      navigation.goBack();
+      // Volta para a lista e força o recarregamento
+      navigation.navigate('TaskList', { refresh: true });
     } catch (error) {
       console.error('Erro ao criar tarefa:', error);
     }
   };
+  
 
   return (
     <View style={styles.container}>
